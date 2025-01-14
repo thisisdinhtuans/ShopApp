@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,8 +49,15 @@ public class ProductController {
                     .toList();
             return ResponseEntity.badRequest().body(errorMessages);
         }
-        MultipartFile file = productDTO.getFile();
-        if(file!=null) {
+        List<MultipartFile> files = productDTO.getFiles();
+
+        files=files==null ? new ArrayList<MultipartFile>() : files;
+        //hàm duyệt danh sách mảng này
+        for(MultipartFile file : files) {
+
+            if(file.getSize()==0) {
+                continue;
+            }
             //kiểm tra kích thước file và định dạng
             if(file.getSize()>10*1024*1024) {
                 return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body("File is too large! Maximum size is 10MB");
@@ -60,8 +68,10 @@ public class ProductController {
             }
             //Lưu file vfa cập nhật thumbnail trong DTO
             String fileName = storeFile(file); // Thay th hàm này với code để lưu file
-             //lưu đối tượng product trong database => Làm sau
+            //lưu đối tượng product trong database => Làm sau
+            //Lưu vào bảng product_images
         }
+
         return ResponseEntity.ok("This is insert product"+productDTO);
     }
 
