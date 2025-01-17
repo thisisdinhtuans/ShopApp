@@ -10,8 +10,8 @@ import java.util.List;
 @Data //toString
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+//@AllArgsConstructor
+//@NoArgsConstructor
 public class ProductDTO {
     @NotBlank(message = "Title is required")
     @Size(min=3, max=200, message = "Title must be between 3 and 200 characters")
@@ -20,10 +20,6 @@ public class ProductDTO {
     @Min(value = 0, message = "Price must be greater than or equal to 0")
     @Max(value = 10000000, message = "Price must be less than or equal to 10,000,000")
     private Float price;
-
-//    @Min(value=0, message = "Discount must be greater than or equal to 0")
-//    @Max(value=100, message = "Discount must be less than or equal to 100")
-//    private int discount;
 
     private String thumbnail;
 
@@ -35,7 +31,65 @@ public class ProductDTO {
 
     private List<MultipartFile> files;
 
-//    @NotNull(message = "Color ID is required")
-//    @JsonProperty("color_id")
-//    private Long colorId;
+    // Constructors
+    public ProductDTO() {
+    }
+
+    public ProductDTO(String name, Float price, String thumbnail, String description, String categoryId, List<MultipartFile> files) {
+        this.name = name;
+        this.price = price;
+        this.thumbnail = thumbnail;
+        this.description = description;
+        this.categoryId = categoryId;
+        this.files = files;
+    }
+
+    // Getters and Setters
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public List<MultipartFile> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<MultipartFile> files) {
+        this.files = files;
+    }
 }
