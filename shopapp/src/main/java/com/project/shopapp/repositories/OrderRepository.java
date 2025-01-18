@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
     //tìm các đơn hàng của 1 user
-    List<Order> findByCustomerId(Long customerId);
+
 }
