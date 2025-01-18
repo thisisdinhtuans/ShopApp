@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Locale;
 
 @RestController
-@RequestMapping("api/v1/categories")
+@RequestMapping("${api.prefix}/categories")
 //@Validated
 public class CategoryController {
     //hiển thị tất cả các categories
