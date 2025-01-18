@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.sql.Date;
+
 @Data //toString
 @Getter
 @Setter
@@ -27,7 +29,7 @@ public class UserDTO {
     private String retypePassword;
 
     @JsonProperty("date_of_birth")
-    private String dateOfBirth;
+    private Date dateOfBirth;
 
     @JsonProperty("facebook_account_id")
     private String facebookAccountId;
@@ -43,7 +45,7 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(String fullName, String phoneNumber, String address, String password, String retypePassword, String dateOfBirth, String facebookAccountId, String googleAccountId, Long roleId) {
+    public UserDTO(String fullName, String phoneNumber, String address, String password, String retypePassword, Date dateOfBirth, String facebookAccountId, String googleAccountId, Long roleId) {
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.address = address;
@@ -96,11 +98,11 @@ public class UserDTO {
         this.retypePassword = retypePassword;
     }
 
-    public String getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

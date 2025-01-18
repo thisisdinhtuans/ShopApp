@@ -3,6 +3,7 @@ package com.project.shopapp.controllers;
 import com.project.shopapp.dtos.CategoryDTO;
 import com.project.shopapp.models.Category;
 import com.project.shopapp.services.CategoryService;
+import com.project.shopapp.services.ICategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,8 @@ import java.util.Locale;
 //@RequiredArgsConstructor
 //@Validated
 public class CategoryController {
-    private final CategoryService categoryService;
-    public CategoryController(CategoryService categoryService) {
+    private final ICategoryService categoryService;
+    public CategoryController(ICategoryService categoryService) {
         this.categoryService = categoryService;
     }
     @PostMapping
