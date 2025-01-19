@@ -2,7 +2,15 @@ package com.project.shopapp.controllers;
 
 import com.project.shopapp.dtos.CategoryDTO;
 import com.project.shopapp.dtos.ProductDTO;
+import com.project.shopapp.dtos.ProductImageDTO;
+import com.project.shopapp.exceptions.DataNotFoundException;
+import com.project.shopapp.exceptions.InvalidParamException;
+import com.project.shopapp.models.Product;
+import com.project.shopapp.models.ProductImage;
+import com.project.shopapp.services.IProductService;
+import com.project.shopapp.services.ProductService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +31,9 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("${api.prefix}/products")
+@RequiredArgsConstructor
 public class ProductController {
+    private final IProductService productService;
     @GetMapping("") //http://localhost:8088/api/v1/categories?page=1&limit=10
     public ResponseEntity<String> getProducts(
             @RequestParam("page") int page,
@@ -41,7 +51,7 @@ public class ProductController {
     public ResponseEntity<?> insertProduct(
             @Valid @RequestBody ProductDTO productDTO,
 //            @RequestPart("file") MultipartFile file,
-            BindingResult result) throws IOException {
+            BindingResult result) throws IOException, DataNotFoundException, InvalidParamException {
         if(result.hasErrors()) {
             List<String> errorMessages=result.getFieldErrors()
                     .stream()
@@ -49,6 +59,7 @@ public class ProductController {
                     .toList();
             return ResponseEntity.badRequest().body(errorMessages);
         }
+        Product newProduct=productService.createProduct(productDTO);
         List<MultipartFile> files = productDTO.getFiles();
 
         files=files==null ? new ArrayList<MultipartFile>() : files;
@@ -68,8 +79,10 @@ public class ProductController {
             }
             //Lưu file vfa cập nhật thumbnail trong DTO
             String fileName = storeFile(file); // Thay th hàm này với code để lưu file
-            //lưu đối tượng product trong database => Làm sau
-            //Lưu vào bảng product_images
+            //lưu đối tượng product trong database
+            ProductImage productImage=productService.createProductImage(newProduct.getId(), ProductImageDTO.builder()
+                    .imageUrl(fileName)
+                    .build());
         }
 
         return ResponseEntity.ok("This is insert product"+productDTO);

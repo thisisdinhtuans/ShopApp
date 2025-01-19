@@ -27,7 +27,7 @@ public class ProductDTO {
 
     @NotNull(message = "Category ID is required")
     @JsonProperty("category_id")
-    private String categoryId;
+    private Long categoryId;
 
     private List<MultipartFile> files;
 
@@ -35,7 +35,7 @@ public class ProductDTO {
     public ProductDTO() {
     }
 
-    public ProductDTO(String name, Float price, String thumbnail, String description, String categoryId, List<MultipartFile> files) {
+    public ProductDTO(String name, Float price, String thumbnail, String description, Long categoryId, List<MultipartFile> files) {
         this.name = name;
         this.price = price;
         this.thumbnail = thumbnail;
@@ -77,11 +77,11 @@ public class ProductDTO {
         this.description = description;
     }
 
-    public String getCategoryId() {
+    public Long getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
 
