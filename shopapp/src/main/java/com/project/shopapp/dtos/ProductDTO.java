@@ -39,7 +39,7 @@ public class ProductDTO {
         this.thumbnail = thumbnail;
         this.description = description;
         this.categoryId = categoryId;
-        this.files = files;
+//        this.files = files;
     }
 
     // Getters and Setters

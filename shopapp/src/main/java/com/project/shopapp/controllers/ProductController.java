@@ -70,44 +70,66 @@ public class ProductController {
         return ResponseEntity.ok(newProduct);
     }
 
-    @PostMapping(value="uploads/{id}" ,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value="uploads/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadImages(
             @PathVariable("id") Long productId,
-            @ModelAttribute("files") List<MultipartFile> files
-    ){
+            @RequestParam("files") List<MultipartFile> files) {
         try {
-            Product existingProduct=productService.getProductById(productId);
-            files=files==null ? new ArrayList<MultipartFile>() : files;
-            List<ProductImage> productImages=new ArrayList<>();
-            //hàm duyệt danh sách mảng này
-            for(MultipartFile file : files) {
+            // Kiểm tra xem sản phẩm có tồn tại không
+            Product existingProduct = productService.getProductById(productId);
+            files = (files == null) ? new ArrayList<>() : files;
+            if(files.size()>ProductImage.MAXIMUM_IMAGES_PER_PRODUCT) {
+                return ResponseEntity.badRequest().body("You can only upload maximum 5 images");
+            }
+            List<ProductImage> productImages = new ArrayList<>();
 
-                if(file.getSize()==0) {
+            for (MultipartFile file : files) {
+                if (file.isEmpty()) {
                     continue;
                 }
-                //kiểm tra kích thước file và định dạng
-                if(file.getSize()>10*1024*1024) {
+                // Kiểm tra kích thước và định dạng file
+                if (file.getSize() > 10 * 1024 * 1024) {
                     return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).body("File is too large! Maximum size is 10MB");
                 }
                 String contentType = file.getContentType();
-                if(contentType==null || !contentType.startsWith("image/") ) {
+                if (contentType == null || !contentType.startsWith("image/")) {
                     return ResponseEntity.badRequest().body("File must be an image");
                 }
-                //Lưu file vfa cập nhật thumbnail trong DTO
-                String fileName = storeFile(file); // Thay th hàm này với code để lưu file
-                //lưu đối tượng product trong database
-                ProductImage productImage=productService.createProductImage(existingProduct.getId(), ProductImageDTO.builder()
-                        .imageUrl(fileName)
-                        .build());
+
+                // Lưu file và cập nhật ProductImage
+                String fileName = storeFile(file);
+//                if (fileName == null) {
+//                    return ResponseEntity.badRequest().body("Failed to store file");
+//                }
+
+                ProductImage productImage = productService.createProductImage(existingProduct.getId(),
+                        ProductImageDTO.builder().imageUrl(fileName).build());
                 productImages.add(productImage);
             }
+
             return ResponseEntity.ok(productImages);
+        } catch (DataNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (IOException e) {
+            // Lỗi trong quá trình lưu file
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("File upload error: " + e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            // Ghi log lỗi chi tiết
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
         }
     }
+
+    private boolean isImageFile(MultipartFile file) {
+        String contentType = file.getContentType();
+        return contentType !=null && contentType.startsWith("image/");
+    }
+
     //Hàm nữa để lưu file này lại
     private String storeFile(MultipartFile file) throws IOException {
+        if(!isImageFile(file) || file.getOriginalFilename()==null) {
+            throw new IOException("Invalid image file");
+        }
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         //Thêm UUID vào trước tên file để đảm bảo tên file là duy nhất
         String uniqueFileName = UUID.randomUUID().toString()+"_"+fileName;
