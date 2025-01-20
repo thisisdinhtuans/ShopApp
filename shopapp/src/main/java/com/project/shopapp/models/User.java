@@ -44,5 +44,96 @@ public class User extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name="role_id")
-    private com.project.shopapp.models.Role role;
+    private Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    // Builder class
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Long id;
+        private String fullName;
+        private String phoneNumber;
+        private String address;
+        private String password;
+        private boolean active;
+        private Date dateOfBirth;
+        private String facebookAccountId;
+        private String googleAccountId;
+        private Role role;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder fullName(String fullName) {
+            this.fullName = fullName;
+            return this;
+        }
+
+        public Builder phoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+            return this;
+        }
+
+        public Builder address(String address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder active(boolean active) {
+            this.active = active;
+            return this;
+        }
+
+        public Builder dateOfBirth(Date dateOfBirth) {
+            this.dateOfBirth = dateOfBirth;
+            return this;
+        }
+
+        public Builder facebookAccountId(String facebookAccountId) {
+            this.facebookAccountId = facebookAccountId;
+            return this;
+        }
+
+        public Builder googleAccountId(String googleAccountId) {
+            this.googleAccountId = googleAccountId;
+            return this;
+        }
+
+        public Builder role(Role role) {
+            this.role = role;
+            return this;
+        }
+
+        public User build() {
+            User user = new User();
+            user.id = this.id;
+            user.fullName = this.fullName;
+            user.phoneNumber = this.phoneNumber;
+            user.address = this.address;
+            user.password = this.password;
+            user.active = this.active;
+            user.dateOfBirth = this.dateOfBirth;
+            user.facebookAccountId = this.facebookAccountId;
+            user.googleAccountId = this.googleAccountId;
+            user.role = this.role;
+            return user;
+        }
+    }
 }

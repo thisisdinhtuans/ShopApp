@@ -20,6 +20,9 @@ import java.util.List;
 @RequestMapping("${api.prefix}/users")
 public class UserController {
     private final IUserService userService;
+    public UserController(IUserService userService) {
+        this.userService = userService;
+    }
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) {
         try {
