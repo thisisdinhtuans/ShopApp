@@ -36,6 +36,7 @@ public class ProductService implements IProductService {
         Product newProduct = Product.builder()
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
+                .description(productDTO.getDescription())
                 .thumbnail(productDTO.getThumbnail())
                 .category(existingCategory)
                 .build();
@@ -49,17 +50,7 @@ public class ProductService implements IProductService {
 
     @Override
     public Page<ProductResponse> getAllProducts(PageRequest pageRequest) {
-        return productRepository.findAll(pageRequest).map(product ->
-                ProductResponse.builder()
-                        .name(product.getName())
-                        .price(product.getPrice())
-                        .thumbnail(product.getThumbnail())
-                        .description(product.getDescription())
-                        .categoryId(product.getCategory().getId())
-                        .createdAt(product.getCreatedAt())
-                        .updatedAt(product.getUpdatedAt())
-                        .build()
-        );
+        return productRepository.findAll(pageRequest).map(ProductResponse::fromProduct);
     }
 
 
