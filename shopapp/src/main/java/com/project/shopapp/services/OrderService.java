@@ -9,6 +9,7 @@ import com.project.shopapp.repositories.OrderRepository;
 import com.project.shopapp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -51,21 +52,33 @@ public class OrderService implements IOrderService {
 
     @Override
     public Order getOrder(Long id) {
-        return null;
+        return orderRepository.findById(id).orElse(null);
     }
 
     @Override
     public Order updateOrder(Long id, OrderDTO orderDTO) throws DataNotFoundException {
-        return null;
+        Order order=orderRepository.findById(id).orElseThrow(()-> new DataNotFoundException("Cannot find order with id: "+id));
+        User existingUser=userRepository.findById(orderDTO.getUserId()).orElseThrow(()-> new DataNotFoundException("Cannot find user with id: "+id));
+        //Tạo 1 luồng bằng ánh xạ riêng ể kiểm soát việc ánh xạ
+        modelMapper.typeMap(OrderDTO.class, Order.class)
+                .addMappings(mapper -> mapper.skip(Order::setId));
+        //Cập nhật các trường của đơn hàng từ orderDTO
+        modelMapper.map(orderDTO, order);
+        order.setUser(existingUser);
+        return orderRepository.save(order);
     }
 
     @Override
     public void deleteOrder(Long id) {
-
+        Order order=orderRepository.findById(id).orElse(null);
+        if(order!=null) {
+            order.setActive(false);
+            orderRepository.save(order);
+        }
     }
 
     @Override
     public List<Order> findByUserId(Long userId) {
-        return List.of();
+        return orderRepository.findByUserId(userId);
     }
 }
