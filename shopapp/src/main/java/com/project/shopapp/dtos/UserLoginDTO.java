@@ -16,29 +16,29 @@ public class UserLoginDTO {
 
     @NotBlank(message = "Password cannot be blank")
     private String password;
-    // Constructors
-    public UserLoginDTO() {
-    }
+//    // Constructors
+//    public UserLoginDTO() {
+//    }
+//
+//    public UserLoginDTO(String phoneNumber, String password) {
+//        this.phoneNumber = phoneNumber;
+//        this.password = password;
+//    }
 
-    public UserLoginDTO(String phoneNumber, String password) {
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-    }
-
-    // Getters and Setters
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+//    // Getters and Setters
+//    public String getPhoneNumber() {
+//        return phoneNumber;
+//    }
+//
+//    public void setPhoneNumber(String phoneNumber) {
+//        this.phoneNumber = phoneNumber;
+//    }
+//
+//    public String getPassword() {
+//        return password;
+//    }
+//
+//    public void setPassword(String password) {
+//        this.password = password;
+//    }
 }

@@ -19,46 +19,59 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-//@RequiredArgsConstructor
-public class ProductService implements IProductService {
+@RequiredArgsConstructor
+public class ProductService implements IProductService{
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductImageRepository productImageRepository;
-    public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository, ProductImageRepository productImageRepository) {
-        this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
-        this.productImageRepository = productImageRepository;
-    }
     @Override
     public Product createProduct(ProductDTO productDTO) throws DataNotFoundException {
-        Category existingCategory=categoryRepository.findById(productDTO.getCategoryId())
-                .orElseThrow(()-> new DataNotFoundException("Cannot find category with id: "+productDTO.getCategoryId()));
+        Category existingCategory = categoryRepository
+                .findById(productDTO.getCategoryId())
+                .orElseThrow(() ->
+                        new DataNotFoundException(
+                                "Cannot find category with id: "+productDTO.getCategoryId()));
+
         Product newProduct = Product.builder()
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
-                .description(productDTO.getDescription())
                 .thumbnail(productDTO.getThumbnail())
+                .description(productDTO.getDescription())
                 .category(existingCategory)
                 .build();
         return productRepository.save(newProduct);
     }
 
     @Override
-    public Product getProductById(long productId) throws DataNotFoundException {
-        return productRepository.findById(productId).orElseThrow(()->new DataNotFoundException("Cannot find product with id ="+productId));
+    public Product getProductById(long productId) throws Exception {
+        return productRepository.findById(productId).
+                orElseThrow(()-> new DataNotFoundException(
+                        "Cannot find product with id ="+productId));
     }
 
     @Override
     public Page<ProductResponse> getAllProducts(PageRequest pageRequest) {
-        return productRepository.findAll(pageRequest).map(ProductResponse::fromProduct);
+        // Lấy danh sách sản phẩm theo trang(page) và giới hạn(limit)
+        return productRepository
+                .findAll(pageRequest)
+                .map(ProductResponse::fromProduct);
     }
 
-
     @Override
-    public Product updateProduct(long id, ProductDTO productDTO) throws Exception {
-        Product existingProduct=getProductById(id);
-        if(existingProduct!=null) {
-            Category existingCategory=categoryRepository.findById(productDTO.getCategoryId()).orElseThrow(()->new DataNotFoundException("Cannot find category with id: "+productDTO.getCategoryId()));
+    public Product updateProduct(
+            long id,
+            ProductDTO productDTO
+    )
+            throws Exception {
+        Product existingProduct = getProductById(id);
+        if(existingProduct != null) {
+            //copy các thuộc tính từ DTO -> Product
+            //Có thể sử dụng ModelMapper
+            Category existingCategory = categoryRepository
+                    .findById(productDTO.getCategoryId())
+                    .orElseThrow(() ->
+                            new DataNotFoundException(
+                                    "Cannot find category with id: "+productDTO.getCategoryId()));
             existingProduct.setName(productDTO.getName());
             existingProduct.setCategory(existingCategory);
             existingProduct.setPrice(productDTO.getPrice());
@@ -67,11 +80,12 @@ public class ProductService implements IProductService {
             return productRepository.save(existingProduct);
         }
         return null;
+
     }
 
     @Override
     public void deleteProduct(long id) {
-        Optional<Product> optionalProduct=productRepository.findById(id);
+        Optional<Product> optionalProduct = productRepository.findById(id);
         optionalProduct.ifPresent(productRepository::delete);
     }
 
@@ -79,18 +93,25 @@ public class ProductService implements IProductService {
     public boolean existsByName(String name) {
         return productRepository.existsByName(name);
     }
-
     @Override
-    public ProductImage createProductImage(Long productId, ProductImageDTO productImageDTO) throws DataNotFoundException, InvalidParamException {
-        Product existingpProduct=productRepository.findById(productId).orElseThrow(()->new DataNotFoundException("Cannot find product with id:" +productImageDTO.getProductId()));
-        ProductImage newProductImage=new ProductImage().builder()
-                .product(existingpProduct)
+    public ProductImage createProductImage(
+            Long productId,
+            ProductImageDTO productImageDTO) throws Exception {
+        Product existingProduct = productRepository
+                .findById(productId)
+                .orElseThrow(() ->
+                        new DataNotFoundException(
+                                "Cannot find product with id: "+productImageDTO.getProductId()));
+        ProductImage newProductImage = ProductImage.builder()
+                .product(existingProduct)
                 .imageUrl(productImageDTO.getImageUrl())
                 .build();
-        //ko cho insert qúa 5 ảnh cho 1 sản phẩm
-        int size=productImageRepository.findByProductId(productId).size();
-        if(size>=ProductImage.MAXIMUM_IMAGES_PER_PRODUCT) {
-            throw new InvalidParamException("Number of images must be <="+ProductImage.MAXIMUM_IMAGES_PER_PRODUCT);
+        //Ko cho insert quá 5 ảnh cho 1 sản phẩm
+        int size = productImageRepository.findByProductId(productId).size();
+        if(size >= ProductImage.MAXIMUM_IMAGES_PER_PRODUCT) {
+            throw new InvalidParamException(
+                    "Number of images must be <= "
+                            +ProductImage.MAXIMUM_IMAGES_PER_PRODUCT);
         }
         return productImageRepository.save(newProductImage);
     }

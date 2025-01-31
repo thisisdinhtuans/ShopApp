@@ -8,8 +8,8 @@ import lombok.*;
 @Data //toString
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+//@AllArgsConstructor
+//@NoArgsConstructor
 @Builder
 public class ProductImageDTO {
 
@@ -45,27 +45,27 @@ public class ProductImageDTO {
         this.imageUrl = imageUrl;
     }
 
-    // Builder class
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-        private Long productId;
-        private String imageUrl;
-
-        public Builder productId(Long productId) {
-            this.productId = productId;
-            return this;
-        }
-
-        public Builder imageUrl(String imageUrl) {
-            this.imageUrl = imageUrl;
-            return this;
-        }
-
-        public ProductImageDTO build() {
-            return new ProductImageDTO(productId, imageUrl);
-        }
-    }
+//    // Builder class
+//    public static Builder builder() {
+//        return new Builder();
+//    }
+//
+//    public static class Builder {
+//        private Long productId;
+//        private String imageUrl;
+//
+//        public Builder productId(Long productId) {
+//            this.productId = productId;
+//            return this;
+//        }
+//
+//        public Builder imageUrl(String imageUrl) {
+//            this.imageUrl = imageUrl;
+//            return this;
+//        }
+//
+//        public ProductImageDTO build() {
+//            return new ProductImageDTO(productId, imageUrl);
+//        }
+//    }
 }

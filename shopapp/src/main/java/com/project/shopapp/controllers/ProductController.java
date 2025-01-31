@@ -42,19 +42,39 @@ public class ProductController {
     public ProductController(IProductService productService) {
         this.productService = productService;
     }
-    @GetMapping("") //http://localhost:8088/api/v1/categories?page=1&limit=10
+//    @GetMapping("") //http://localhost:8088/api/v1/categories?page=1&limit=10
+//    public ResponseEntity<ProductListResponse> getProducts(
+//            @RequestParam("page") int page,
+//            @RequestParam("limit") int limit
+//    ) {
+//        //Tạo Pageable từ thông tin trạng thái và giới hạn
+//        PageRequest pageRequest= PageRequest.of(
+//                page, limit
+//                , Sort.by("createdAt").descending());
+//        Page<ProductResponse> productPage=productService.getAllProducts(pageRequest);
+//        //Lấy tổng số trang
+//        int totalPages=productPage.getTotalPages();
+//        List<ProductResponse> products=productPage.getContent();
+//        return ResponseEntity.ok(ProductListResponse
+//                .builder()
+//                .products(products)
+//                .totalPages(totalPages)
+//                .build());
+//    }
+
+    @GetMapping("")
     public ResponseEntity<ProductListResponse> getProducts(
-            @RequestParam("page") int page,
-            @RequestParam("limit") int limit
+            @RequestParam("page")     int page,
+            @RequestParam("limit")    int limit
     ) {
-        //Tạo Pageable từ thông tin trạng thái và giới hạn
-        PageRequest pageRequest= PageRequest.of(
-                page, limit
-                , Sort.by("createdAt").descending());
-        Page<ProductResponse> productPage=productService.getAllProducts(pageRequest);
-        //Lấy tổng số trang
-        int totalPages=productPage.getTotalPages();
-        List<ProductResponse> products=productPage.getContent();
+        // Tạo Pageable từ thông tin trang và giới hạn
+        PageRequest pageRequest = PageRequest.of(
+                page, limit,
+                Sort.by("createdAt").descending());
+        Page<ProductResponse> productPage = productService.getAllProducts(pageRequest);
+        // Lấy tổng số trang
+        int totalPages = productPage.getTotalPages();
+        List<ProductResponse> products = productPage.getContent();
         return ResponseEntity.ok(ProductListResponse
                 .builder()
                 .products(products)
