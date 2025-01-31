@@ -29,15 +29,33 @@ public class ProductService implements IProductService {
         this.categoryRepository = categoryRepository;
         this.productImageRepository = productImageRepository;
     }
+//    @Override
+//    public Product createProduct(ProductDTO productDTO) throws DataNotFoundException {
+//        Category existingCategory=categoryRepository.findById(productDTO.getCategoryId())
+//                .orElseThrow(()-> new DataNotFoundException("Cannot find category with id: "+productDTO.getCategoryId()));
+//        Product newProduct = Product.builder()
+//                .name(productDTO.getName())
+//                .price(productDTO.getPrice())
+//                .description(productDTO.getDescription())
+//                .thumbnail(productDTO.getThumbnail())
+//                .category(existingCategory)
+//                .build();
+//        return productRepository.save(newProduct);
+//    }
+
     @Override
     public Product createProduct(ProductDTO productDTO) throws DataNotFoundException {
-        Category existingCategory=categoryRepository.findById(productDTO.getCategoryId())
-                .orElseThrow(()-> new DataNotFoundException("Cannot find category with id: "+productDTO.getCategoryId()));
+        Category existingCategory = categoryRepository
+                .findById(productDTO.getCategoryId())
+                .orElseThrow(() ->
+                        new DataNotFoundException(
+                                "Cannot find category with id: "+productDTO.getCategoryId()));
+
         Product newProduct = Product.builder()
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
-                .description(productDTO.getDescription())
                 .thumbnail(productDTO.getThumbnail())
+                .description(productDTO.getDescription())
                 .category(existingCategory)
                 .build();
         return productRepository.save(newProduct);

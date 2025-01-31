@@ -20,52 +20,52 @@ public class ProductImageDTO {
     @Size(min = 5, max = 200, message = "Image's name")
     @JsonProperty("image_url")
     private String imageUrl;
-    // Constructors
-    public ProductImageDTO() {}
-
-    public ProductImageDTO(Long productId, String imageUrl) {
-        this.productId = productId;
-        this.imageUrl = imageUrl;
-    }
-
-    // Getters and Setters
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    // Builder class
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-        private Long productId;
-        private String imageUrl;
-
-        public Builder productId(Long productId) {
-            this.productId = productId;
-            return this;
-        }
-
-        public Builder imageUrl(String imageUrl) {
-            this.imageUrl = imageUrl;
-            return this;
-        }
-
-        public ProductImageDTO build() {
-            return new ProductImageDTO(productId, imageUrl);
-        }
-    }
+//    // Constructors
+//    public ProductImageDTO() {}
+//
+//    public ProductImageDTO(Long productId, String imageUrl) {
+//        this.productId = productId;
+//        this.imageUrl = imageUrl;
+//    }
+//
+//    // Getters and Setters
+//    public Long getProductId() {
+//        return productId;
+//    }
+//
+//    public void setProductId(Long productId) {
+//        this.productId = productId;
+//    }
+//
+//    public String getImageUrl() {
+//        return imageUrl;
+//    }
+//
+//    public void setImageUrl(String imageUrl) {
+//        this.imageUrl = imageUrl;
+//    }
+//
+//    // Builder class
+//    public static Builder builder() {
+//        return new Builder();
+//    }
+//
+//    public static class Builder {
+//        private Long productId;
+//        private String imageUrl;
+//
+//        public Builder productId(Long productId) {
+//            this.productId = productId;
+//            return this;
+//        }
+//
+//        public Builder imageUrl(String imageUrl) {
+//            this.imageUrl = imageUrl;
+//            return this;
+//        }
+//
+//        public ProductImageDTO build() {
+//            return new ProductImageDTO(productId, imageUrl);
+//        }
+//    }
 }

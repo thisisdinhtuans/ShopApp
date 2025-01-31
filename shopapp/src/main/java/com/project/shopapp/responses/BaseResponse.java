@@ -1,27 +1,43 @@
 package com.project.shopapp.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.MappedSuperclass;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+//@AllArgsConstructor
+//@Data
+//@SuperBuilder
+////@SuperBuilder
+//@NoArgsConstructor
+//public class BaseResponse {
+//    @JsonProperty("created_at")
+//    private LocalDate createdAt;
+//
+//    @JsonProperty("updated_at")
+//    private LocalDate updatedAt;
+//
+//    public void setCreatedAt(LocalDate createdAt) {
+//        this.createdAt = createdAt;
+//    }
+//
+//    public void setUpdatedAt(LocalDate updatedAt) {
+//        this.updatedAt = updatedAt;
+//    }
+//}
+@Data//toString
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@MappedSuperclass
 public class BaseResponse {
     @JsonProperty("created_at")
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @JsonProperty("updated_at")
-    private LocalDateTime updated_at;
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.created_at = createdAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updated_at = updatedAt;
-    }
+    private LocalDateTime updatedAt;
 }
