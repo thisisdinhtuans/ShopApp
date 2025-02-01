@@ -22,11 +22,14 @@ public class OrderDetail {
     @JoinColumn(name="product_id")
     private Product product;
 
+    @Column(name = "price", nullable = false)
+    private Float price;
+
     @Column(name="number_of_products", nullable = false)
-    private String numberOfProducts;
+    private int numberOfProducts;
 
     @Column(name="total_money", nullable = false)
-    private String totalMoney;
+    private Float totalMoney;
 
     @Column(name="color")
     private String color;
