@@ -7,15 +7,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name="users")
-@Data
+@Table(name = "users")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -53,6 +51,7 @@ public class User extends BaseEntity implements UserDetails {
     @ManyToOne
     @JoinColumn(name="role_id")
     private Role role;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

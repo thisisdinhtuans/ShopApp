@@ -69,7 +69,7 @@ public class UserService implements IUserService {
                 throw new BadCredentialsException("Invalid phone number / password");
             }
         }
-        UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(phoneNumber, password);
+        UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(phoneNumber, password, existingUser.getAuthorities());
         //authenticate with Java Spring Security
         authenticationManager.authenticate(authenticationToken);
         return jwtTokenUtil.generateToken(optionalUser.get());

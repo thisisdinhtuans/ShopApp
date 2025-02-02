@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @Getter
 @Setter
-public class BaseEntity {
+public abstract class BaseEntity {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
@@ -25,4 +25,5 @@ public class BaseEntity {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
 }
