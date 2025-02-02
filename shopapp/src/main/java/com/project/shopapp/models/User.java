@@ -45,10 +45,10 @@ public class User extends BaseEntity implements UserDetails {
     private Date dateOfBirth;
 
     @JsonProperty("facebook_account_id")
-    private String facebookAccountId;
+    private int facebookAccountId;
 
     @JsonProperty("google_account_id")
-    private String googleAccountId;
+    private int googleAccountId;
 
     @ManyToOne
     @JoinColumn(name="role_id")
